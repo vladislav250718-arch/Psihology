@@ -1,1 +1,1756 @@
 
+
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo: Жи-Ви</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #667085;
+      --line: #e7edf0;
+      --soft: #f4f8f7;
+      --paper: #ffffff;
+      --glass: rgba(255, 255, 255, .68);
+      --glass-strong: rgba(255, 255, 255, .82);
+      --glass-line: rgba(255, 255, 255, .42);
+      --teal: #167c80;
+      --teal-dark: #0e5f63;
+      --mint: #dff4ef;
+      --coral: #e96d5b;
+      --amber: #f5a623;
+      --blue: #476f9f;
+      --danger: #c2413c;
+      --shadow: 0 18px 45px rgba(17, 31, 44, .16);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(8, 27, 31, .82), rgba(22, 84, 83, .48)),
+        url("./psy-app-hero.jpg") center / cover fixed;
+      font-family: Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(280px, 420px) minmax(320px, 760px);
+      gap: 32px;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    .side {
+      color: #fff;
+      max-width: 430px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .34), rgba(255, 255, 255, .08)),
+        rgba(22, 124, 128, .58);
+      border: 1px solid rgba(255, 255, 255, .42);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .2);
+      position: relative;
+      overflow: hidden;
+      font-size: 0;
+    }
+
+    .mark::before {
+      content: "";
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, .88);
+      box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .14);
+    }
+
+    .side h1 {
+      margin: 0 0 16px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .side p {
+      margin: 0 0 24px;
+      color: rgba(255, 255, 255, .86);
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: var(--radius);
+      padding: 12px;
+      backdrop-filter: blur(14px);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 2px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .76);
+    }
+
+    .phone {
+      width: min(420px, calc(100vw - 32px));
+      height: min(812px, calc(100vh - 48px));
+      min-height: 680px;
+      margin: 0 auto;
+      border: 10px solid #111820;
+      border-radius: 34px;
+      background:
+        linear-gradient(180deg, rgba(4, 30, 32, .24), rgba(10, 47, 45, .42)),
+        url("./psy-app-hero.jpg") center / cover;
+      box-shadow: 0 24px 60px rgba(4, 20, 24, .36);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .04) 44%, rgba(13, 54, 52, .22)),
+        rgba(255, 255, 255, .06);
+      backdrop-filter: blur(3px) saturate(1.08);
+      -webkit-backdrop-filter: blur(3px) saturate(1.08);
+      pointer-events: none;
+    }
+
+    .status {
+      height: 34px;
+      flex: 0 0 34px;
+      position: relative;
+      z-index: 1;
+      background: rgba(17, 24, 32, .88);
+      color: #fff;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .topbar {
+      flex: 0 0 auto;
+      position: relative;
+      z-index: 1;
+      padding: 14px 16px 12px;
+      background: rgba(255, 255, 255, .62);
+      border-bottom: 1px solid var(--glass-line);
+      backdrop-filter: blur(18px) saturate(1.18);
+      -webkit-backdrop-filter: blur(18px) saturate(1.18);
+    }
+
+    .toprow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .app-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .app-title .mark {
+      width: 34px;
+      height: 34px;
+      font-size: 15px;
+    }
+
+    .app-title strong {
+      display: block;
+      font-size: 16px;
+      color: #103234;
+    }
+
+    .app-title span {
+      display: block;
+      color: rgba(16, 50, 52, .72);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .role-switch {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      background: rgba(236, 247, 244, .54);
+      padding: 4px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, .42);
+    }
+
+    .role-switch button {
+      height: 34px;
+      border-radius: 6px;
+      color: var(--muted);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 800;
+      transition: .18s ease;
+    }
+
+    .role-switch button.active {
+      background: rgba(255, 255, 255, .86);
+      color: var(--teal-dark);
+      box-shadow: 0 4px 12px rgba(17, 31, 44, .08);
+    }
+
+    .content {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      overflow: auto;
+      padding: 16px;
+      scroll-behavior: smooth;
+      color: #fff;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section-title {
+      margin: 2px 0 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.1;
+      color: #fff;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, .24);
+    }
+
+    .section-title p {
+      margin: 4px 0 0;
+      color: rgba(255, 255, 255, .82);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .card {
+      color: var(--ink);
+      background: var(--glass);
+      border: 1px solid var(--glass-line);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 12px 28px rgba(11, 39, 43, .14);
+      backdrop-filter: blur(18px) saturate(1.18);
+      -webkit-backdrop-filter: blur(18px) saturate(1.18);
+    }
+
+    .hero-card {
+      padding: 16px;
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(7, 46, 48, .68), rgba(22, 124, 128, .36));
+      border: 1px solid rgba(255, 255, 255, .28);
+      min-height: 146px;
+      display: grid;
+      align-content: end;
+      backdrop-filter: blur(12px) saturate(1.18);
+      -webkit-backdrop-filter: blur(12px) saturate(1.18);
+    }
+
+    .hero-card h2 {
+      margin: 0 0 6px;
+      font-size: 24px;
+      line-height: 1.12;
+    }
+
+    .hero-card p {
+      margin: 0;
+      max-width: 285px;
+      color: rgba(255, 255, 255, .9);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .between {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      flex: 0 0 50px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #ccebe4, #f7d1c8);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: var(--teal-dark);
+      overflow: hidden;
+    }
+
+    .avatar.small {
+      width: 38px;
+      height: 38px;
+      flex-basis: 38px;
+      font-size: 13px;
+    }
+
+    .grow {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .name {
+      font-weight: 850;
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      margin-top: 3px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(238, 244, 243, .82);
+      color: #365b5d;
+      font-size: 11px;
+      font-weight: 750;
+      border: 1px solid rgba(255, 255, 255, .38);
+    }
+
+    .chip.good {
+      background: rgba(223, 244, 239, .88);
+      color: var(--teal-dark);
+    }
+
+    .chip.warn {
+      background: rgba(255, 242, 216, .9);
+      color: #8b5e12;
+    }
+
+    .chip.bad {
+      background: rgba(255, 228, 225, .9);
+      color: var(--danger);
+    }
+
+    .chip.blue {
+      background: rgba(231, 239, 250, .9);
+      color: #315a91;
+    }
+
+    .price {
+      font-weight: 900;
+      color: var(--teal-dark);
+      white-space: nowrap;
+    }
+
+    .btn {
+      min-height: 40px;
+      border-radius: var(--radius);
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 850;
+      color: #fff;
+      background: var(--teal);
+      transition: .18s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: var(--teal-dark);
+    }
+
+    .btn.secondary {
+      color: var(--ink);
+      background: rgba(237, 243, 242, .82);
+    }
+
+    .btn.secondary:hover {
+      background: rgba(223, 233, 231, .92);
+    }
+
+    .btn.coral {
+      background: var(--coral);
+    }
+
+    .btn.ghost {
+      color: #ffffff;
+      background: rgba(255, 255, 255, .16);
+      border: 1px solid rgba(255, 255, 255, .32);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .btn.full {
+      width: 100%;
+    }
+
+    .btn.icon {
+      width: 40px;
+      padding: 0;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 108px;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .field,
+    .select,
+    .area {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, .56);
+      background: rgba(255, 255, 255, .78);
+      color: var(--ink);
+      border-radius: var(--radius);
+      padding: 11px 12px;
+      outline: none;
+      min-height: 42px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .area {
+      resize: vertical;
+      min-height: 84px;
+    }
+
+    .field:focus,
+    .select:focus,
+    .area:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(22, 124, 128, .12);
+    }
+
+    .form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .label {
+      display: grid;
+      gap: 6px;
+      color: #244247;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      height: 62px;
+      flex: 0 0 62px;
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, .62);
+      border-top: 1px solid rgba(255, 255, 255, .42);
+      backdrop-filter: blur(20px) saturate(1.2);
+      -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    }
+
+    .tabs.no-search {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .tab {
+      color: rgba(24, 62, 64, .72);
+      background: transparent;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 800;
+      min-width: 0;
+    }
+
+    .tab b {
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .tab.active {
+      color: var(--teal-dark);
+      background: rgba(240, 248, 246, .78);
+    }
+
+    .empty {
+      text-align: center;
+      color: #234248;
+      padding: 28px 18px;
+      border: 1px dashed rgba(255, 255, 255, .56);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .56);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .modal {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      background: rgba(8, 16, 20, .52);
+      align-items: end;
+      justify-content: center;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .sheet {
+      width: 100%;
+      max-height: 92%;
+      overflow: auto;
+      color: var(--ink);
+      background: rgba(255, 255, 255, .84);
+      border-radius: 18px 18px 0 0;
+      padding: 16px;
+      box-shadow: 0 -12px 35px rgba(0, 0, 0, .22);
+      border: 1px solid rgba(255, 255, 255, .44);
+      backdrop-filter: blur(22px) saturate(1.18);
+      -webkit-backdrop-filter: blur(22px) saturate(1.18);
+    }
+
+    .sheet-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .sheet-head h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .x {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      color: var(--ink);
+      background: #eef4f3;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      padding: 4px;
+      background: #eef4f3;
+      border-radius: var(--radius);
+    }
+
+    .segmented button {
+      min-height: 38px;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 850;
+    }
+
+    .segmented button.active {
+      color: var(--teal-dark);
+      background: #fff;
+    }
+
+    .question {
+      min-height: 212px;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+    }
+
+    .options {
+      display: grid;
+      gap: 8px;
+    }
+
+    .option {
+      min-height: 44px;
+      text-align: left;
+      padding: 10px 12px;
+      color: var(--ink);
+      background: #f6faf9;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-weight: 750;
+    }
+
+    .option.active {
+      color: var(--teal-dark);
+      border-color: var(--teal);
+      background: var(--mint);
+    }
+
+    .notice {
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      background: #f7fbfb;
+      border: 1px solid var(--line);
+      color: #345;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .toast {
+      position: absolute;
+      z-index: 40;
+      left: 14px;
+      right: 14px;
+      bottom: 74px;
+      display: none;
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      color: #fff;
+      background: rgba(16, 30, 36, .96);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .22);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .toast.show {
+      display: block;
+      animation: fadeout 2.2s both;
+    }
+
+    @keyframes fadeout {
+      0%, 78% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(10px); }
+    }
+
+    @media (max-width: 880px) {
+      .page {
+        grid-template-columns: 1fr;
+        padding: 18px;
+      }
+
+      .side {
+        display: none;
+      }
+
+      .phone {
+        height: calc(100vh - 36px);
+        min-height: 650px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <aside class="side">
+      <div class="brand"><span class="mark" aria-label="Логотип заглушка"></span><span>Жи-Ви</span></div>
+      <h1>Подбор психолога с доверием к квалификации</h1>
+      <p>Демо для проверки основных функций: клиентский онбординг, фильтры, избранное, публикации, регистрация специалиста, подписки и ручная проверка документов.</p>
+      <div class="metrics">
+        <div class="metric"><strong>5</strong><span>разделов</span></div>
+        <div class="metric"><strong>3</strong><span>роли</span></div>
+        <div class="metric"><strong>0</strong><span>серверов</span></div>
+      </div>
+    </aside>
+
+    <section class="phone" aria-label="Жи-Ви demo app">
+      <div class="status">
+        <span>9:41</span>
+        <span>LTE 87%</span>
+      </div>
+
+      <header class="topbar">
+        <div class="toprow">
+          <div class="app-title">
+            <span class="mark" aria-label="Логотип заглушка"></span>
+            <div>
+              <strong>Жи-Ви</strong>
+              <span id="role-subtitle">Клиентский режим</span>
+            </div>
+          </div>
+          <button class="btn icon secondary" type="button" onclick="resetDemo()" title="Сброс демо">↻</button>
+        </div>
+        <div class="role-switch" aria-label="Роль">
+          <button id="role-client" class="active" type="button" onclick="setRole('client')">Клиент</button>
+          <button id="role-psychologist" type="button" onclick="setRole('psychologist')">Психолог</button>
+          <button id="role-admin" type="button" onclick="setRole('admin')">Админ</button>
+        </div>
+      </header>
+
+      <div class="content" id="content">
+        <section id="view-home" class="section active"></section>
+        <section id="view-search" class="section"></section>
+        <section id="view-favorites" class="section"></section>
+        <section id="view-posts" class="section"></section>
+        <section id="view-profile" class="section"></section>
+      </div>
+
+      <nav class="tabs" aria-label="Главное меню">
+        <button id="tab-home" class="tab active" type="button" onclick="go('home')"><b>⌂</b><span>Главная</span></button>
+        <button id="tab-search" class="tab" type="button" onclick="go('search')"><b>⌕</b><span>Поиск</span></button>
+        <button id="tab-favorites" class="tab" type="button" onclick="go('favorites')"><b>♡</b><span>Избранное</span></button>
+        <button id="tab-posts" class="tab" type="button" onclick="go('posts')"><b>▤</b><span>Публикации</span></button>
+        <button id="tab-profile" class="tab" type="button" onclick="go('profile')"><b>◉</b><span>Профиль</span></button>
+      </nav>
+
+      <div id="modal" class="modal" onclick="closeModal(event)">
+        <div class="sheet" onclick="event.stopPropagation()">
+          <div id="modal-body"></div>
+        </div>
+      </div>
+
+      <div id="toast" class="toast"></div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "zhi-vi-demo-state-v1";
+
+    const specializations = [
+      "Зависимости",
+      "Созависимость",
+      "Деструктивные отношения",
+      "Тревога",
+      "Панические атаки",
+      "Семейные отношения",
+      "Расставание",
+      "Самооценка"
+    ];
+
+    const initialState = {
+      role: "client",
+      view: "home",
+      client: {
+        name: "Анна Морозова",
+        email: "anna@example.com",
+        onboardingDone: false,
+        answers: {},
+        preferredGender: "Не важно"
+      },
+      psychologistDraft: null,
+      favorites: [1],
+      favoritePosts: [2],
+      filters: {
+        query: "",
+        spec: "Все",
+        format: "Все",
+        maxPrice: "Любая"
+      },
+      posts: [
+        {
+          id: 1,
+          authorId: 1,
+          author: "Мария Ковалёва",
+          title: "Как заметить деструктивный сценарий в отношениях",
+          type: "Статья",
+          text: "Короткий материал о признаках эмоциональной зависимости и первых шагах к опоре на себя.",
+          status: "published",
+          views: 1243
+        },
+        {
+          id: 2,
+          authorId: 2,
+          author: "Алексей Морозов",
+          title: "Почему созависимость сложно распознать",
+          type: "Заметка",
+          text: "Пять ситуаций, где забота незаметно превращается в контроль и потерю собственных границ.",
+          status: "published",
+          views: 826
+        }
+      ],
+      specialists: [
+        {
+          id: 1,
+          name: "Мария Ковалёва",
+          initials: "МК",
+          gender: "Женщина",
+          specs: ["Деструктивные отношения", "Созависимость"],
+          format: "Онлайн",
+          price: 4500,
+          rating: 4.9,
+          experience: 8,
+          verified: true,
+          status: "approved",
+          subscription: "Расширенный",
+          docs: ["Диплом психолога", "Сертификат КПТ"],
+          about: "Работаю с созависимостью, тревожной привязанностью и восстановлением границ."
+        },
+        {
+          id: 2,
+          name: "Алексей Морозов",
+          initials: "АМ",
+          gender: "Мужчина",
+          specs: ["Зависимости", "Семейные отношения"],
+          format: "Онлайн и очно",
+          price: 3800,
+          rating: 4.8,
+          experience: 11,
+          verified: true,
+          status: "approved",
+          subscription: "Базовый",
+          docs: ["Диплом", "Сертификат по аддикциям"],
+          about: "Помогаю при зависимом поведении, семейных кризисах и возврате устойчивости."
+        },
+        {
+          id: 3,
+          name: "Дарья Смирнова",
+          initials: "ДС",
+          gender: "Женщина",
+          specs: ["Тревога", "Панические атаки", "Самооценка"],
+          format: "Онлайн",
+          price: 5200,
+          rating: 4.7,
+          experience: 6,
+          verified: true,
+          status: "approved",
+          subscription: "Премиум",
+          docs: ["Диплом", "Сертификат ACT"],
+          about: "Специализируюсь на тревоге, панических атаках и навыках саморегуляции."
+        },
+        {
+          id: 4,
+          name: "Екатерина Лебедева",
+          initials: "ЕЛ",
+          gender: "Женщина",
+          specs: ["Расставание", "Деструктивные отношения"],
+          format: "Очно",
+          price: 3300,
+          rating: 4.6,
+          experience: 5,
+          verified: false,
+          status: "pending",
+          subscription: "Пробный",
+          docs: ["diploma.pdf", "certificate-family.jpg"],
+          about: "Новый специалист ожидает проверки документов."
+        }
+      ],
+      adminLog: ["Создана демо-база специалистов"]
+    };
+
+    let state = load();
+
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : clone(initialState);
+      } catch {
+        return clone(initialState);
+      }
+    }
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function resetDemo() {
+      state = clone(initialState);
+      save();
+      render();
+      toast("Демо сброшено к начальному состоянию");
+    }
+
+    function esc(text) {
+      return String(text ?? "").replace(/[&<>"']/g, function(char) {
+        return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char];
+      });
+    }
+
+    function toast(text) {
+      const node = document.getElementById("toast");
+      node.textContent = text;
+      node.classList.remove("show");
+      void node.offsetWidth;
+      node.classList.add("show");
+    }
+
+    function setRole(role) {
+      state.role = role;
+      state.view = "home";
+      save();
+      render();
+    }
+
+    function go(view) {
+      if (state.role === "psychologist" && view === "search") {
+        view = "home";
+      }
+      state.view = view;
+      save();
+      render();
+    }
+
+    function roleTitle() {
+      if (state.role === "psychologist") return "Кабинет психолога";
+      if (state.role === "admin") return "Админская проверка";
+      return "Клиентский режим";
+    }
+
+    function approvedSpecialists() {
+      return state.specialists.filter(item => item.status === "approved");
+    }
+
+    function pendingSpecialists() {
+      return state.specialists.filter(item => item.status === "pending");
+    }
+
+    function recommended() {
+      const topics = [
+        state.client.answers.problem,
+        ...Object.values(state.client.answers || {})
+      ].filter(Boolean);
+
+      return approvedSpecialists()
+        .map(item => {
+          const score = item.specs.reduce((sum, spec) => sum + (topics.includes(spec) ? 3 : 0), 0)
+            + (item.subscription === "Премиум" ? 2 : 0)
+            + (item.subscription === "Расширенный" ? 1 : 0)
+            + item.rating;
+          return { ...item, score };
+        })
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3);
+    }
+
+    function filterSpecialists() {
+      return approvedSpecialists().filter(item => {
+        const q = state.filters.query.trim().toLowerCase();
+        const inQuery = !q || item.name.toLowerCase().includes(q) || item.specs.join(" ").toLowerCase().includes(q);
+        const inSpec = state.filters.spec === "Все" || item.specs.includes(state.filters.spec);
+        const inFormat = state.filters.format === "Все" || item.format.includes(state.filters.format);
+        const inPrice = state.filters.maxPrice === "Любая" || item.price <= Number(state.filters.maxPrice);
+        return inQuery && inSpec && inFormat && inPrice;
+      });
+    }
+
+    function cardSpecialist(item, compact = false) {
+      const fav = state.favorites.includes(item.id);
+      return `
+        <article class="card">
+          <div class="row">
+            <div class="avatar">${esc(item.initials)}</div>
+            <div class="grow">
+              <div class="between">
+                <div class="name">${esc(item.name)}</div>
+                <div class="price">${item.price.toLocaleString("ru-RU")} ₽</div>
+              </div>
+              <div class="meta">${esc(item.format)} • опыт ${item.experience} лет • ${item.rating}</div>
+              <div class="chips">
+                ${item.verified ? `<span class="chip good">Верифицирован</span>` : `<span class="chip warn">На проверке</span>`}
+                ${item.specs.slice(0, compact ? 1 : 2).map(spec => `<span class="chip">${esc(spec)}</span>`).join("")}
+              </div>
+            </div>
+          </div>
+          ${compact ? "" : `<p class="meta" style="margin-top:10px">${esc(item.about)}</p>`}
+          <div class="grid2" style="margin-top:12px">
+            <button class="btn secondary" type="button" onclick="toggleFavorite(${item.id})">${fav ? "В избранном" : "В избранное"}</button>
+            <button class="btn" type="button" onclick="openSpecialist(${item.id})">Профиль</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderHome() {
+      if (state.role === "admin") {
+        const pending = pendingSpecialists();
+        return `
+          <div class="section-title">
+            <div><h2>Проверка</h2><p>Новые анкеты специалистов</p></div>
+            <span class="chip warn">${pending.length} ожидают</span>
+          </div>
+          <div class="stack">
+            <div class="card hero-card">
+              <h2>Документы до публикации</h2>
+              <p>Профиль появляется в поиске только после ручного одобрения администратором.</p>
+            </div>
+            ${pending.length ? pending.map(adminCard).join("") : `<div class="empty">Нет анкет на проверке</div>`}
+          </div>
+        `;
+      }
+
+      if (state.role === "psychologist") {
+        const me = state.psychologistDraft;
+        return `
+          <div class="section-title">
+            <div><h2>Кабинет</h2><p>${me ? "Профиль специалиста создан" : "Создайте профиль специалиста"}</p></div>
+            <button class="btn secondary" type="button" onclick="openPsychologistRegistration()">Анкета</button>
+          </div>
+          <div class="stack">
+            <div class="card hero-card">
+              <h2>Публикации и заявки</h2>
+              <p>После проверки документов специалист попадает в каталог и может продвигать материалы.</p>
+            </div>
+            ${me ? specialistStatusCard(me) : `<div class="card"><div class="name">Профиль не заполнен</div><p class="meta">Добавьте образование, сертификаты и специализации для проверки.</p><button class="btn full" type="button" onclick="openPsychologistRegistration()">Начать регистрацию</button></div>`}
+            <div class="grid2">
+              <div class="card"><div class="name">${state.posts.length}</div><div class="meta">публикации в демо</div></div>
+              <div class="card"><div class="name">24</div><div class="meta">просмотра профиля сегодня</div></div>
+            </div>
+          </div>
+        `;
+      }
+
+      const intro = state.client.onboardingDone
+        ? `Подборка обновлена по анкете`
+        : `Ответьте на 3 вопроса для подбора`;
+      return `
+        <div class="section-title">
+          <div><h2>Главная</h2><p>${esc(intro)}</p></div>
+          <button class="btn secondary" type="button" onclick="openClientRegistration()">Анкета</button>
+        </div>
+        <div class="stack">
+          <div class="card hero-card">
+            <h2>${state.client.onboardingDone ? "Рекомендации готовы" : "Найдём подходящего специалиста"}</h2>
+            <p>Каталог показывает только специалистов после проверки документов и профиля.</p>
+          </div>
+          <div class="between">
+            <strong>Рекомендации</strong>
+            <button class="btn ghost" type="button" onclick="openOnboarding()">3 вопроса</button>
+          </div>
+          ${recommended().map(item => cardSpecialist(item, true)).join("")}
+          <div class="between">
+            <strong>Что почитать</strong>
+            <button class="btn ghost" type="button" onclick="go('posts')">Все</button>
+          </div>
+          ${state.posts.filter(p => p.status === "published").slice(0, 2).map(postCard).join("")}
+        </div>
+      `;
+    }
+
+    function specialistStatusCard(item) {
+      const status = item.status === "approved" ? "Одобрен" : item.status === "rejected" ? "Отклонён" : "На проверке";
+      const cls = item.status === "approved" ? "good" : item.status === "rejected" ? "bad" : "warn";
+      return `
+        <div class="card">
+          <div class="between">
+            <div>
+              <div class="name">${esc(item.name)}</div>
+              <div class="meta">${esc(item.specs.join(", "))}</div>
+            </div>
+            <span class="chip ${cls}">${status}</span>
+          </div>
+          <div class="chips">
+            <span class="chip blue">${esc(item.subscription || "Пробный")}</span>
+            ${(item.docs || []).map(doc => `<span class="chip">${esc(doc)}</span>`).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function adminCard(item) {
+      return `
+        <article class="card">
+          <div class="between">
+            <div class="row">
+              <div class="avatar">${esc(item.initials)}</div>
+              <div>
+                <div class="name">${esc(item.name)}</div>
+                <div class="meta">${esc(item.specs.join(", "))}</div>
+              </div>
+            </div>
+            <span class="chip warn">На проверке</span>
+          </div>
+          <div class="chips">
+            ${(item.docs || []).map(doc => `<span class="chip">${esc(doc)}</span>`).join("")}
+          </div>
+          <p class="meta">${esc(item.about)}</p>
+          <div class="grid2">
+            <button class="btn" type="button" onclick="approveSpecialist(${item.id})">Одобрить</button>
+            <button class="btn secondary" type="button" onclick="rejectSpecialist(${item.id})">Отклонить</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function currentPsychologistPostAuthorId() {
+      return state.psychologistDraft?.id || 100;
+    }
+
+    function isOwnPost(post) {
+      return state.role === "psychologist" && post.authorId === currentPsychologistPostAuthorId();
+    }
+
+    function postCard(post, options = {}) {
+      const canSave = options.canSave && !isOwnPost(post);
+      const saved = state.favoritePosts.includes(post.id);
+      return `
+        <article class="card">
+          <div class="between">
+            <span class="chip blue">${esc(post.type)}</span>
+            <span class="meta">${post.views} просмотров</span>
+          </div>
+          <div class="name" style="margin-top:8px">${esc(post.title)}</div>
+          <div class="meta">${esc(post.author)}</div>
+          <p class="meta">${esc(post.text)}</p>
+          ${canSave ? `<button class="btn secondary full" type="button" onclick="togglePostFavorite(${post.id})">${saved ? "Убрать из избранного" : "Сохранить статью"}</button>` : ""}
+        </article>
+      `;
+    }
+
+    function renderSearch() {
+      const list = filterSpecialists();
+      return `
+        <div class="section-title">
+          <div><h2>Поиск</h2><p>Найдено: ${list.length}</p></div>
+          <button class="btn ghost" type="button" onclick="clearFilters()">Сброс</button>
+        </div>
+        <div class="toolbar">
+          <input class="field" value="${esc(state.filters.query)}" placeholder="Имя или тема" oninput="updateFilter('query', this.value)">
+          <select class="select" onchange="updateFilter('maxPrice', this.value)">
+            ${["Любая", "3500", "4500", "5500"].map(v => `<option ${state.filters.maxPrice === v ? "selected" : ""} value="${v}">${v === "Любая" ? "Цена" : "до " + v}</option>`).join("")}
+          </select>
+        </div>
+        <div class="grid2" style="margin-bottom:12px">
+          <select class="select" onchange="updateFilter('spec', this.value)">
+            ${["Все", ...specializations].map(v => `<option ${state.filters.spec === v ? "selected" : ""}>${esc(v)}</option>`).join("")}
+          </select>
+          <select class="select" onchange="updateFilter('format', this.value)">
+            ${["Все", "Онлайн", "Очно"].map(v => `<option ${state.filters.format === v ? "selected" : ""}>${esc(v)}</option>`).join("")}
+          </select>
+        </div>
+        <div class="stack">
+          ${list.length ? list.map(item => cardSpecialist(item)).join("") : `<div class="empty">По этим фильтрам специалистов нет</div>`}
+        </div>
+      `;
+    }
+
+    function renderFavorites() {
+      if (state.role === "psychologist") {
+        const ownAuthorId = currentPsychologistPostAuthorId();
+        const savedPosts = state.posts.filter(post => state.favoritePosts.includes(post.id) && post.authorId !== ownAuthorId);
+        return `
+          <div class="section-title">
+            <div><h2>Избранное</h2><p>${savedPosts.length} сохранённых материалов других психологов</p></div>
+            <button class="btn ghost" type="button" onclick="go('posts')">Лента</button>
+          </div>
+          <div class="stack">
+            ${savedPosts.length ? savedPosts.map(post => postCard(post, { canSave: true })).join("") : `<div class="empty">Сохраняйте понравившиеся статьи других психологов из вкладки «Публикации»</div>`}
+          </div>
+        `;
+      }
+
+      const favs = approvedSpecialists().filter(item => state.favorites.includes(item.id));
+      return `
+        <div class="section-title">
+          <div><h2>Избранное</h2><p>${favs.length} сохранённых специалистов</p></div>
+          <button class="btn ghost" type="button" onclick="openOnboarding()">Предпочтения</button>
+        </div>
+        <div class="stack">
+          ${favs.length ? favs.map(item => cardSpecialist(item, true)).join("") : `<div class="empty">Сохранённые психологи появятся здесь</div>`}
+          <div class="card">
+            <div class="name">Мои предпочтения</div>
+            <div class="chips">
+              ${Object.values(state.client.answers).filter(Boolean).map(v => `<span class="chip">${esc(v)}</span>`).join("") || `<span class="chip warn">Анкета не заполнена</span>`}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPosts() {
+      if (state.role === "psychologist") {
+        return `
+          <div class="section-title">
+            <div><h2>Публикации</h2><p>Статьи и заметки специалиста</p></div>
+            <button class="btn" type="button" onclick="openPostForm()">Создать</button>
+          </div>
+          <div class="stack">
+            ${state.posts.map(post => postCard(post, { canSave: true })).join("")}
+          </div>
+        `;
+      }
+
+      if (state.role === "admin") {
+        return `
+          <div class="section-title">
+            <div><h2>Модерация</h2><p>Контент специалистов</p></div>
+          </div>
+          <div class="stack">
+            ${state.posts.map(post => `
+              <article class="card">
+                <div class="between"><span class="chip blue">${esc(post.status)}</span><span class="meta">${esc(post.author)}</span></div>
+                <div class="name" style="margin-top:8px">${esc(post.title)}</div>
+                <p class="meta">${esc(post.text)}</p>
+              </article>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      return `
+        <div class="section-title">
+          <div><h2>Публикации</h2><p>Материалы проверенных специалистов</p></div>
+        </div>
+        <div class="stack">
+          ${state.posts.filter(p => p.status === "published").map(postCard).join("")}
+        </div>
+      `;
+    }
+
+    function renderProfile() {
+      if (state.role === "admin") {
+        return `
+          <div class="section-title">
+            <div><h2>Админ</h2><p>Журнал действий</p></div>
+          </div>
+          <div class="stack">
+            <div class="grid2">
+              <div class="card"><div class="name">${pendingSpecialists().length}</div><div class="meta">на проверке</div></div>
+              <div class="card"><div class="name">${approvedSpecialists().length}</div><div class="meta">в каталоге</div></div>
+            </div>
+            <div class="card">
+              <div class="name">Справочник специализаций</div>
+              <div class="chips">${specializations.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>
+            </div>
+            <div class="card">
+              <div class="name">Журнал</div>
+              ${state.adminLog.slice().reverse().map(line => `<p class="meta">${esc(line)}</p>`).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      if (state.role === "psychologist") {
+        const me = state.psychologistDraft;
+        return `
+          <div class="section-title">
+            <div><h2>Профиль</h2><p>Документы, статус, подписка</p></div>
+          </div>
+          <div class="stack">
+            ${me ? specialistStatusCard(me) : `<div class="empty">Анкета специалиста не создана</div>`}
+            <div class="card">
+              <div class="between">
+                <div>
+                  <div class="name">Подписка</div>
+                  <div class="meta">${me?.subscription || "Пробный"} тариф</div>
+                </div>
+                <button class="btn secondary" type="button" onclick="openSubscription()">Изменить</button>
+              </div>
+            </div>
+            <button class="btn full" type="button" onclick="openPsychologistRegistration()">Редактировать анкету</button>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="section-title">
+          <div><h2>Профиль</h2><p>${esc(state.client.email)}</p></div>
+        </div>
+        <div class="stack">
+          <div class="card">
+            <div class="row">
+              <div class="avatar">${state.client.name.split(" ").map(x => x[0]).join("").slice(0, 2)}</div>
+              <div>
+                <div class="name">${esc(state.client.name)}</div>
+                <div class="meta">${state.client.onboardingDone ? "Анкета заполнена" : "Анкета не заполнена"}</div>
+              </div>
+            </div>
+          </div>
+          <button class="btn full" type="button" onclick="openClientRegistration()">Редактировать данные</button>
+          <button class="btn secondary full" type="button" onclick="openOnboarding()">Пройти 3 вопроса</button>
+        </div>
+      `;
+    }
+
+    function render() {
+      if (state.role === "psychologist" && state.view === "search") {
+        state.view = "home";
+      }
+
+      document.getElementById("role-subtitle").textContent = roleTitle();
+      ["client", "psychologist", "admin"].forEach(role => {
+        document.getElementById("role-" + role).classList.toggle("active", state.role === role);
+      });
+      document.querySelector(".tabs").classList.toggle("no-search", state.role === "psychologist");
+      document.getElementById("tab-search").style.display = state.role === "psychologist" ? "none" : "";
+
+      const views = {
+        home: renderHome(),
+        search: renderSearch(),
+        favorites: renderFavorites(),
+        posts: renderPosts(),
+        profile: renderProfile()
+      };
+
+      Object.keys(views).forEach(view => {
+        const section = document.getElementById("view-" + view);
+        section.innerHTML = views[view];
+        section.classList.toggle("active", state.view === view);
+        document.getElementById("tab-" + view).classList.toggle("active", state.view === view);
+      });
+    }
+
+    function updateFilter(key, value) {
+      state.filters[key] = value;
+      save();
+      render();
+    }
+
+    function clearFilters() {
+      state.filters = clone(initialState.filters);
+      save();
+      render();
+    }
+
+    function toggleFavorite(id) {
+      if (state.favorites.includes(id)) {
+        state.favorites = state.favorites.filter(item => item !== id);
+        toast("Специалист удалён из избранного");
+      } else {
+        state.favorites.push(id);
+        toast("Специалист добавлен в избранное");
+      }
+      save();
+      render();
+    }
+
+    function togglePostFavorite(id) {
+      if (!state.favoritePosts) state.favoritePosts = [];
+      if (state.favoritePosts.includes(id)) {
+        state.favoritePosts = state.favoritePosts.filter(item => item !== id);
+        toast("Статья удалена из избранного");
+      } else {
+        state.favoritePosts.push(id);
+        toast("Статья сохранена в избранное");
+      }
+      save();
+      render();
+    }
+
+    function modal(html) {
+      document.getElementById("modal-body").innerHTML = html;
+      document.getElementById("modal").classList.add("open");
+    }
+
+    function closeModal(event) {
+      if (!event || event.target.id === "modal") {
+        document.getElementById("modal").classList.remove("open");
+      }
+    }
+
+    function closeSheet() {
+      document.getElementById("modal").classList.remove("open");
+    }
+
+    function openSpecialist(id) {
+      const item = state.specialists.find(x => x.id === id);
+      if (!item) return;
+      modal(`
+        <div class="sheet-head">
+          <h3>${esc(item.name)}</h3>
+          <button class="x" type="button" onclick="closeSheet()">×</button>
+        </div>
+        ${cardSpecialist(item)}
+        <div class="card" style="margin-top:12px">
+          <div class="name">Документы</div>
+          <div class="chips">${item.docs.map(doc => `<span class="chip good">${esc(doc)}</span>`).join("")}</div>
+        </div>
+        <button class="btn full coral" style="margin-top:12px" type="button" onclick="toast('В реальном приложении здесь будет заявка или переход к записи')">Записаться</button>
+      `);
+    }
+
+    function openClientRegistration() {
+      modal(`
+        <div class="sheet-head">
+          <h3>Регистрация клиента</h3>
+          <button class="x" type="button" onclick="closeSheet()">×</button>
+        </div>
+        <form class="form" onsubmit="saveClient(event)">
+          <label class="label">ФИО
+            <input class="field" name="name" value="${esc(state.client.name)}" required>
+          </label>
+          <label class="label">Email
+            <input class="field" name="email" type="email" value="${esc(state.client.email)}" required>
+          </label>
+          <div class="notice">После сохранения можно пройти короткую анкету из 3 вопросов для рекомендаций.</div>
+          <button class="btn full" type="submit">Сохранить</button>
+          <button class="btn secondary full" type="button" onclick="openOnboarding()">Перейти к анкете</button>
+        </form>
+      `);
+    }
+
+    function saveClient(event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      state.client.name = data.get("name").trim();
+      state.client.email = data.get("email").trim();
+      save();
+      closeSheet();
+      render();
+      toast("Данные клиента сохранены");
+    }
+
+    function openOnboarding(step = 0) {
+      const questions = [
+        {
+          key: "problem",
+          title: "Что сейчас беспокоит сильнее всего?",
+          options: ["Деструктивные отношения", "Созависимость", "Зависимости", "Тревога", "Расставание"]
+        },
+        {
+          key: "format",
+          title: "Какой формат помощи комфортнее?",
+          options: ["Онлайн", "Очно", "Онлайн и очно"]
+        },
+        {
+          key: "gender",
+          title: "Есть ли предпочтение к специалисту?",
+          options: ["Женщина", "Мужчина", "Не важно"]
+        }
+      ];
+      const q = questions[step];
+      modal(`
+        <div class="sheet-head">
+          <h3>Вопрос ${step + 1} из 3</h3>
+          <button class="x" type="button" onclick="closeSheet()">×</button>
+        </div>
+        <div class="question">
+          <div class="name">${esc(q.title)}</div>
+          <div class="options">
+            ${q.options.map(option => `
+              <button class="option ${state.client.answers[q.key] === option ? "active" : ""}" type="button" onclick="answerOnboarding('${q.key}', '${esc(option)}', ${step})">${esc(option)}</button>
+            `).join("")}
+          </div>
+        </div>
+        <div class="grid2">
+          <button class="btn secondary" type="button" ${step === 0 ? "disabled" : ""} onclick="openOnboarding(${Math.max(0, step - 1)})">Назад</button>
+          <button class="btn" type="button" onclick="${step === 2 ? "finishOnboarding()" : `openOnboarding(${step + 1})`}">${step === 2 ? "Готово" : "Далее"}</button>
+        </div>
+      `);
+    }
+
+    function answerOnboarding(key, value, step) {
+      const cleanValue = value.replace(/&#039;/g, "'");
+      state.client.answers[key] = cleanValue;
+      if (key === "gender") state.client.preferredGender = cleanValue;
+      save();
+      openOnboarding(step);
+    }
+
+    function finishOnboarding() {
+      state.client.onboardingDone = true;
+      save();
+      closeSheet();
+      render();
+      toast("Анкета сохранена, рекомендации обновлены");
+    }
+
+    function openPsychologistRegistration() {
+      const me = state.psychologistDraft || {
+        name: "",
+        email: "",
+        price: 4000,
+        experience: 3,
+        format: "Онлайн",
+        subscription: "Пробный",
+        specs: ["Созависимость"],
+        docs: []
+      };
+      modal(`
+        <div class="sheet-head">
+          <h3>Регистрация психолога</h3>
+          <button class="x" type="button" onclick="closeSheet()">×</button>
+        </div>
+        <form class="form" onsubmit="savePsychologist(event)">
+          <label class="label">ФИО
+            <input class="field" name="name" value="${esc(me.name)}" required>
+          </label>
+          <label class="label">Email
+            <input class="field" name="email" type="email" value="${esc(me.email)}" required>
+          </label>
+          <div class="grid2">
+            <label class="label">Опыт
+              <input class="field" name="experience" type="number" min="0" value="${esc(me.experience)}" required>
+            </label>
+            <label class="label">Цена
+              <input class="field" name="price" type="number" min="0" value="${esc(me.price)}" required>
+            </label>
+          </div>
+          <label class="label">Формат
+            <select class="select" name="format">
+              ${["Онлайн", "Очно", "Онлайн и очно"].map(v => `<option ${me.format === v ? "selected" : ""}>${v}</option>`).join("")}
+            </select>
+          </label>
+          <label class="label">Специализации
+            <select class="select" name="spec1">
+              ${specializations.map(v => `<option ${me.specs?.[0] === v ? "selected" : ""}>${esc(v)}</option>`).join("")}
+            </select>
+          </label>
+          <label class="label">Дополнительная специализация
+            <select class="select" name="spec2">
+              ${specializations.map(v => `<option ${me.specs?.[1] === v ? "selected" : ""}>${esc(v)}</option>`).join("")}
+            </select>
+          </label>
+          <label class="label">Дипломы и сертификаты
+            <input class="field" name="docs" type="file" multiple>
+          </label>
+          <label class="label">О себе
+            <textarea class="area" name="about" required>${esc(me.about || "Работаю с зависимостями, отношениями и восстановлением личных границ.")}</textarea>
+          </label>
+          <div class="notice">В демо сохраняются названия файлов. В реальном приложении документы уходят в защищённое хранилище и проверяются администратором.</div>
+          <button class="btn full" type="submit">Отправить на проверку</button>
+        </form>
+      `);
+    }
+
+    function savePsychologist(event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      const docs = Array.from(event.target.docs.files).map(file => file.name);
+      const id = 100;
+      const name = data.get("name").trim();
+      const item = {
+        id,
+        name,
+        initials: name.split(" ").map(x => x[0]).join("").slice(0, 2).toUpperCase() || "ПС",
+        gender: "Не указано",
+        specs: Array.from(new Set([data.get("spec1"), data.get("spec2")].filter(Boolean))),
+        format: data.get("format"),
+        price: Number(data.get("price")),
+        rating: 0,
+        experience: Number(data.get("experience")),
+        verified: false,
+        status: "pending",
+        subscription: state.psychologistDraft?.subscription || "Пробный",
+        docs: docs.length ? docs : (state.psychologistDraft?.docs?.length ? state.psychologistDraft.docs : ["diploma-demo.pdf", "certificate-demo.pdf"]),
+        about: data.get("about").trim()
+      };
+
+      state.psychologistDraft = item;
+      state.specialists = state.specialists.filter(x => x.id !== id).concat(item);
+      state.adminLog.push(`Анкета ${name} отправлена на проверку`);
+      save();
+      closeSheet();
+      render();
+      toast("Анкета психолога отправлена администратору");
+    }
+
+    function approveSpecialist(id) {
+      const item = state.specialists.find(x => x.id === id);
+      if (!item) return;
+      item.status = "approved";
+      item.verified = true;
+      item.rating = item.rating || 4.5;
+      if (state.psychologistDraft?.id === id) state.psychologistDraft = { ...item };
+      state.adminLog.push(`Одобрен профиль: ${item.name}`);
+      save();
+      render();
+      toast("Профиль одобрен и добавлен в каталог");
+    }
+
+    function rejectSpecialist(id) {
+      const item = state.specialists.find(x => x.id === id);
+      if (!item) return;
+      item.status = "rejected";
+      item.verified = false;
+      if (state.psychologistDraft?.id === id) state.psychologistDraft = { ...item };
+      state.adminLog.push(`Отклонён профиль: ${item.name}`);
+      save();
+      render();
+      toast("Профиль отклонён, специалист видит статус в кабинете");
+    }
+
+    function openPostForm() {
+      modal(`
+        <div class="sheet-head">
+          <h3>Новая публикация</h3>
+          <button class="x" type="button" onclick="closeSheet()">×</button>
+        </div>
+        <form class="form" onsubmit="savePost(event)">
+          <label class="label">Тип
+            <select class="select" name="type">
+              <option>Статья</option>
+              <option>Заметка</option>
+              <option>Творчество</option>
+            </select>
+          </label>
+          <label class="label">Заголовок
+            <input class="field" name="title" required>
+          </label>
+          <label class="label">Текст
+            <textarea class="area" name="text" required></textarea>
+          </label>
+          <button class="btn full" type="submit">Опубликовать</button>
+        </form>
+      `);
+    }
+
+    function savePost(event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      const author = state.psychologistDraft?.name || "Новый специалист";
+      state.posts.unshift({
+        id: Date.now(),
+        authorId: state.psychologistDraft?.id || 100,
+        author,
+        title: data.get("title").trim(),
+        type: data.get("type"),
+        text: data.get("text").trim(),
+        status: "published",
+        views: 0
+      });
+      save();
+      closeSheet();
+      render();
+      toast("Публикация добавлена в ленту");
+    }
+
+    function openSubscription() {
+      const plans = [
+        ["Пробный", "Проверка профиля и черновик анкеты"],
+        ["Базовый", "Размещение в поиске после модерации"],
+        ["Расширенный", "Больше публикаций и статистика"],
+        ["Премиум", "Приоритет на главной и продвижение"]
+      ];
+      modal(`
+        <div class="sheet-head">
+          <h3>Подписка специалиста</h3>
+          <button class="x" type="button" onclick="closeSheet()">×</button>
+        </div>
+        <div class="stack">
+          ${plans.map(([name, text]) => `
+            <button class="option ${state.psychologistDraft?.subscription === name ? "active" : ""}" type="button" onclick="setSubscription('${name}')">
+              <strong>${name}</strong><br><span class="meta">${text}</span>
+            </button>
+          `).join("")}
+        </div>
+      `);
+    }
+
+    function setSubscription(plan) {
+      if (!state.psychologistDraft) {
+        toast("Сначала создайте анкету специалиста");
+        return;
+      }
+      state.psychologistDraft.subscription = plan;
+      const item = state.specialists.find(x => x.id === state.psychologistDraft.id);
+      if (item) item.subscription = plan;
+      state.adminLog.push(`Тариф специалиста изменён: ${plan}`);
+      save();
+      closeSheet();
+      render();
+      toast("Подписка обновлена");
+    }
+
+    render();
+  </script>
+</body>
+</html>
